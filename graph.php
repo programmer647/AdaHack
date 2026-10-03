@@ -10,6 +10,8 @@ if (empty($_SESSION['company_name'])) {
 $categoryDataPoints = [];
 $yearlyDataPoints = [];
 $yearOptions = [];
+$yearlyrevenue = [];
+//$yearlyrevenue=[['y'=>100, 'label'=>'2020'], ['y'=>200, 'label'=>'2021'], ['y'=>300, 'label'=>'2022'], ['y'=>400, 'label'=>'2023'], ['y'=>500, 'label'=>'2024'], ['y'=>600, 'label'=>'2025'], ['y'=>700, 'label'=>'2026']];
 
 $stmt = $conn->prepare("SELECT DISTINCT year
     FROM Tbltest
@@ -20,6 +22,15 @@ $stmt->execute();
 while ($yearRow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $yearOptions[] = (int)$yearRow['year'];
 }
+
+$stmt=$conn->prepare("SELECT year, Revenue FROM Tbltest WHERE CompanyName=:companyName ORDER BY year ASC");
+$stmt->bindParam(':companyName', $_SESSION['company_name']);
+$stmt->execute();
+while ($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+    $yearlyrevenue[]=['y'=>(float)$row['Revenue'], 'label'=>(string)$row['year']];
+}
+
+
 
 $selectedYear = !empty($_GET['year']) ? (int)$_GET['year'] : null;
 if ($selectedYear === null && !empty($yearOptions)) {
@@ -94,13 +105,26 @@ while ($row = $yearlyStmt->fetch(PDO::FETCH_ASSOC)) {
                 axisX: {
                     title: "Reporting Year"
                 },
-                data: [{
-                    type: "line",
-                    lineThickness: 3,
-                    markerSize: 6,
-                    yValueFormatString: "#,##0.## Kgs",
-                    dataPoints: <?php echo json_encode($yearlyDataPoints, JSON_NUMERIC_CHECK); ?>
-                }]
+                axisY2: {
+                    title: "Revenue (£)"
+                },
+                data: [
+                    {
+                        type: "line",
+                        lineThickness: 3,
+                        markerSize: 6,
+                        yValueFormatString: "#,##0.## Kgs",
+                        dataPoints: <?php echo json_encode($yearlyDataPoints, JSON_NUMERIC_CHECK); ?>
+                    },
+                    {
+                        type: "line",
+                        lineThickness: 3,
+                        markerSize: 6,
+                        axisYType: "secondary",
+                        yValueFormatString: "#,##0.## £",
+                        dataPoints: <?php echo json_encode($yearlyrevenue, JSON_NUMERIC_CHECK); ?>
+                    }
+                ]
             });
             yearlyChart.render();
         }

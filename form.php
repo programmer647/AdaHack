@@ -16,6 +16,7 @@ include_once "connection.php";
     <form action="insert.php" method="POST">
         Company Name:<br><input type="text" name="name" required><br>
         Reporting Year:<br><input type="number" name="year" min="2020" max="2100" value="2026" required><br>
+        Company Revenue:<br><input type="number" name="revenue" required><br>
         <h3>Transport</h3>
         Miles travelled in petrol cars:<br><input type="number" min="0" name="petrol" required><br>
         Miles travelled in diesel cars:<br><input type="number" min="0" name="diesel" required><br>

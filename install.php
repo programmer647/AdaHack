@@ -15,7 +15,8 @@ CREATE TABLE Tbltest (
     Electricity INT NOT NULL,
     Gas INT NOT NULL,
     Energy INT NOT NULL,
-    TotalCO2e INT NOT NULL)");
+    TotalCO2e INT NOT NULL,
+    Revenue INT NOT NULL)");
 $stmt->execute();
 
 ?>

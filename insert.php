@@ -11,6 +11,8 @@ const PETROL_FACTOR = 0.27696; // kg CO2e per mile
 const DIESEL_FACTOR = 0.21014; // kg CO2e per mile
 const ELECTRICITY_FACTOR = 0.207; // kg CO2e per kWh
 const GAS_FACTOR = 0.183; // kg CO2e per kWh
+const SHORTHAUL_FACTOR = 
+const LONGHAUL_FACTOR = 
 
 $petrol = $_POST['petrol'] * PETROL_FACTOR;
 $diesel = $_POST['diesel'] * DIESEL_FACTOR;
@@ -22,7 +24,7 @@ $total=$petrol + $diesel + $electricity + $gas;
 
 
 
-$stmt = $conn->prepare("INSERT INTO Tbltest (CompanyName,Year,Petrolcars,Dieselcars,ShortHaul,LongHaul,Transport,Electricity,Gas,Energy,TotalCO2e) VALUES (:companyName, :year, :petrol, :diesel, :shorthaul, :longhaul, :transport, :electricity, :gas, :energy, :totalCO2e)");
+$stmt = $conn->prepare("INSERT INTO Tbltest (CompanyName,Year,Petrolcars,Dieselcars,ShortHaul,LongHaul,Transport,Electricity,Gas,Energy,TotalCO2e,Revenue) VALUES (:companyName, :year, :petrol, :diesel, :shorthaul, :longhaul, :transport, :electricity, :gas, :energy, :totalCO2e, :revenue)");
 $stmt->bindParam(':companyName', $companyName);
 $stmt->bindParam(':year', $reportingYear);
 $stmt->bindParam(':petrol', $_POST['petrol']);
@@ -34,6 +36,7 @@ $stmt->bindParam(':electricity', $_POST['electricity']);
 $stmt->bindParam(':gas', $_POST['gas']);
 $stmt->bindParam(':energy', $energy);
 $stmt->bindParam(':totalCO2e', $total);
+$stmt->bindParam(':revenue', $_POST['revenue']);
 $stmt->execute();
 
 

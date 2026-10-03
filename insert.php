@@ -11,17 +11,19 @@ const PETROL_FACTOR = 0.27696; // kg CO2e per mile
 const DIESEL_FACTOR = 0.21014; // kg CO2e per mile
 const ELECTRICITY_FACTOR = 0.207; // kg CO2e per kWh
 const GAS_FACTOR = 0.183; // kg CO2e per kWh
-const SHORTHAUL_FACTOR = 
-const LONGHAUL_FACTOR = 
+const SHORTHAUL_FACTOR = 0.12576; // kg CO2e per km
+const LONGHAUL_FACTOR = 0.11704; // kg CO2e per km
+
 
 $petrol = $_POST['petrol'] * PETROL_FACTOR;
 $diesel = $_POST['diesel'] * DIESEL_FACTOR;
 $electricity = $_POST['electricity'] * ELECTRICITY_FACTOR;
 $gas = $_POST['gas'] * GAS_FACTOR;
-$transport = $petrol + $diesel;
+$shorthaul = $_POST['shorthaul'] * SHORTHAUL_FACTOR;
+$longhaul = $_POST['longhaul'] * LONGHAUL_FACTOR;
+$transport = $petrol + $diesel + $shorthaul + $longhaul;
 $energy = $electricity + $gas;
-$total=$petrol + $diesel + $electricity + $gas;
-
+$total=$petrol + $diesel + $electricity + $gas + $shorthaul + $longhaul;;
 
 
 $stmt = $conn->prepare("INSERT INTO Tbltest (CompanyName,Year,Petrolcars,Dieselcars,ShortHaul,LongHaul,Transport,Electricity,Gas,Energy,TotalCO2e,Revenue) VALUES (:companyName, :year, :petrol, :diesel, :shorthaul, :longhaul, :transport, :electricity, :gas, :energy, :totalCO2e, :revenue)");

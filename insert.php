@@ -22,15 +22,24 @@ $total=$petrol + $diesel + $electricity + $gas;
 
 
 
-$stmt = $conn->prepare("INSERT INTO Tbltest (CompanyName,Year,Transport,Energy,TotalCO2e) VALUES (:companyName, :year, :transport, :energy, :totalCO2e)");
+$stmt = $conn->prepare("INSERT INTO Tbltest (CompanyName,Year,Petrolcars,Dieselcars,ShortHaul,LongHaul,Transport,Electricity,Gas,Energy,TotalCO2e) VALUES (:companyName, :year, :petrol, :diesel, :shorthaul, :longhaul, :transport, :electricity, :gas, :energy, :totalCO2e)");
 $stmt->bindParam(':companyName', $companyName);
 $stmt->bindParam(':year', $reportingYear);
+$stmt->bindParam(':petrol', $_POST['petrol']);
+$stmt->bindParam(':diesel', $_POST['diesel']);
+$stmt->bindParam(':shorthaul', $_POST['shorthaul']);
+$stmt->bindParam(':longhaul', $_POST['longhaul']);
 $stmt->bindParam(':transport', $transport);
+$stmt->bindParam(':electricity', $_POST['electricity']);
+$stmt->bindParam(':gas', $_POST['gas']);
 $stmt->bindParam(':energy', $energy);
 $stmt->bindParam(':totalCO2e', $total);
 $stmt->execute();
 
 
-header('Location: graphtest.php');
+$_SESSION['company_name'] = $companyName;
+
+
+header('Location: graph.php');
 exit;
 ?>

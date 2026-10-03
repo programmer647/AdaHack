@@ -10,5 +10,5 @@ if ($companyName === '') {
 
 $_SESSION['company_name'] = $companyName;
 
-header('Location: graphtest.php');
+header('Location: graph.php');
 exit;
